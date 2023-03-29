@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # 이미지를 불러옵니다.
-img = cv2.imread('hw2/image3.jpg') 
+img = cv2.imread('hw2/image1.jpg') 
 
 # 이미지를 회색조로 변경합니다.
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
@@ -18,12 +18,14 @@ color = cv2.bilateralFilter(img, 9, 300, 300)
 cartoon = cv2.bitwise_and(color,color,mask=edges)
 
 # 엣지 이외의 평탄한 부분은 흰색으로 처리
-sketch = cv2.divide(gray,blur,scale=256)
+sketch = cv2.divide(gray,blur,scale=255)
+
+# 사진 합성을 위해 채널바꾸기
 sketch = np.repeat(sketch[:, :, np.newaxis], 3, -1)
 
 merge = np.hstack((cartoon,sketch))
+
 # 결과를 출력합니다.
 cv2.imshow("Cartoon", merge) 
-# cv2.imshow("Cartoon", cartoon) 
 cv2.waitKey(0) 
 cv2.destroyAllWindows()
